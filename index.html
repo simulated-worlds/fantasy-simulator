@@ -41,32 +41,46 @@
   </div>
 
   <script>
-    let stage = "start";
+  let stage = "start";
 
-    function startGame() {
-      stage = "birth";
-      updateScene();
+  function startGame() {
+    stage = "birth";
+    updateScene();
+  }
+
+  function updateScene() {
+    const story = document.getElementById("story");
+    const choices = document.getElementById("choices");
+
+    if (stage === "birth") {
+      story.textContent =
+        "You are born into a world that does not care whether you succeed or fail.";
+
+      choices.innerHTML = `
+        <button onclick="nextStage()">Continue</button>
+      `;
     }
 
-    function updateScene() {
-      const story = document.getElementById("story");
-      const choices = document.getElementById("choices");
+    else if (stage === "childhood") {
+      story.textContent =
+        "Childhood passes quietly. You learn obedience before you learn choice.";
 
-      if (stage === "birth") {
-        story.textContent =
-          "You are born into a world that does not care whether you succeed or fail.";
-
-        choices.innerHTML = `
-          <button onclick="nextStage()">Continue</button>
-        `;
-      }
+      choices.innerHTML = `
+        <button onclick="nextStage()">Continue</button>
+      `;
     }
+  }
 
-    function nextStage() {
+  function nextStage() {
+    if (stage === "birth") {
       stage = "childhood";
-      updateScene();
+    } else if (stage === "childhood") {
+      stage = "end";
     }
-  </script>
+
+    updateScene();
+  }
+    </script>
 
 </body>
   </html>
