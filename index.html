@@ -40,7 +40,7 @@
     <button onclick="startGame()">Begin Life</button>
   </div>
 
-  <script>
+<script>
   // --- GLOBAL STATE (BINDING) ---
   let state = {
     stage: "world_intro",
@@ -63,9 +63,7 @@
         "This world is vast, unequal, and indifferent. Kingdoms rise and fall, and most lives end unnoticed.";
 
       choices.innerHTML = `
-        <button onclick="advanceStage('difficulty')">
-          Continue
-        </button>
+        <button onclick="advanceStage('difficulty')">Continue</button>
       `;
     }
 
@@ -81,28 +79,29 @@
       `;
     }
 
-    // --- STAGE 3: RACE SELECTION ---
+    // --- STAGE 3: RACE SELECTION (FULL, SPEC-COMPLIANT) ---
     else if (state.stage === "race") {
       story.textContent =
-        "Choose your race. This determines lifespan, vulnerability, and how the world treats you.";
+        "Choose your race. This choice determines your lifecycle, vulnerability, and how the world will treat you.";
 
       choices.innerHTML = `
         <button onclick="chooseRace('human')">Human</button>
         <button onclick="chooseRace('elf')">Elf</button>
         <button onclick="chooseRace('dwarf')">Dwarf</button>
+        <button onclick="chooseRace('spirit')">Elemental Spirit</button>
+        <button onclick="chooseRace('mythical_beast')">Mythical Beast</button>
       `;
     }
 
-    // --- STAGE 7: BIRTH (LOCKED UNTIL ALL PRIOR STAGES COMPLETE) ---
+    // --- STAGE 7: BIRTH (LOCKED UNTIL PRIOR STAGES COMPLETE) ---
     else if (state.stage === "birth") {
       story.textContent =
         "You are born.";
 
       choices.innerHTML = `
         <p>
-          Birth reached.<br>
-          Difficulty: ${state.difficulty}<br>
-          Race: ${state.race}
+          <strong>Difficulty:</strong> ${state.difficulty}<br>
+          <strong>Race:</strong> ${state.race}
         </p>
       `;
     }
@@ -127,7 +126,7 @@
 
   // INITIAL RENDER
   updateScene();
-    </script>
+</script>
 
 </body>
   </html>
