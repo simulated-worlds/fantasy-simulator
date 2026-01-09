@@ -84,4 +84,55 @@
         choices.innerHTML = `
           <button onclick="chooseDifficulty('gentle')">Gentle Fate</button>
           <button onclick="chooseDifficulty('true')">True Chronicle</button>
-          <button onclick="chooseDifficulty
+          <button onclick="chooseDifficulty('cruel')">Cruel World</button>
+        `;
+      }
+
+      else if (state.stage === "race") {
+        story.textContent =
+          "Choose your race. This choice determines your lifecycle, vulnerability, and how the world will treat you.";
+
+        choices.innerHTML = `
+          <button onclick="chooseRace('human')">Human</button>
+          <button onclick="chooseRace('elf')">Elf</button>
+          <button onclick="chooseRace('dwarf')">Dwarf</button>
+          <button onclick="chooseRace('spirit')">Elemental Spirit</button>
+          <button onclick="chooseRace('mythical_beast')">Mythical Beast</button>
+        `;
+      }
+
+      else if (state.stage === "birth") {
+        story.textContent = "You are born.";
+
+        choices.innerHTML = `
+          <p>
+            <strong>Difficulty:</strong> ${DIFFICULTY_LABELS[state.difficulty]}<br>
+            <strong>Race:</strong> ${RACE_LABELS[state.race]}
+          </p>
+        `;
+      }
+    }
+
+    function advanceStage(next) {
+      state.stage = next;
+      updateScene();
+    }
+
+    function chooseDifficulty(choice) {
+      state.difficulty = choice;
+      state.stage = "race";
+      updateScene();
+    }
+
+    function chooseRace(race) {
+      state.race = race;
+      state.stage = "birth";
+      updateScene();
+    }
+
+    // INITIAL RENDER
+    updateScene();
+  </script>
+
+</body>
+</html>
