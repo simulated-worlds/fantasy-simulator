@@ -64,6 +64,11 @@
     female: "Female"
   };
 
+  const ORPHAN_LABELS = {
+    no: "Not an Orphan",
+    yes: "Orphaned"
+  };
+
   // --- GLOBAL STATE (BINDING) ---
   let state = {
     stage: "world_intro",
@@ -125,7 +130,6 @@
       `;
     }
 
-    // --- STAGE 5: GENDER SELECTION ---
     else if (state.stage === "gender") {
       story.textContent =
         "Your gender will affect how the world treats you, legally and socially.";
@@ -136,7 +140,23 @@
       `;
     }
 
-    // --- BIRTH (STILL LOCKED) ---
+    // --- STAGE 6: ORPHAN STATUS ---
+    else if (state.stage === "orphan") {
+      story.textContent =
+        "Some children are raised under protection. Others are left without it.";
+
+      choices.innerHTML = `
+        <button onclick="chooseOrphanStatus('no')">
+          Not an Orphan
+        </button>
+
+        <button onclick="chooseOrphanStatus('yes')">
+          Orphaned
+        </button>
+      `;
+    }
+
+    // --- BIRTH (NOW UNLOCKED NEXT STEP) ---
     else if (state.stage === "birth") {
       story.textContent = "You are born.";
 
@@ -145,7 +165,8 @@
           <strong>Difficulty:</strong> ${DIFFICULTY_LABELS[state.difficulty]}<br>
           <strong>Race:</strong> ${RACE_LABELS[state.race]}<br>
           <strong>Family Background:</strong> ${FAMILY_CLASS_LABELS[state.familyClass]}<br>
-          <strong>Gender:</strong> ${GENDER_LABELS[state.gender]}
+          <strong>Gender:</strong> ${GENDER_LABELS[state.gender]}<br>
+          <strong>Orphan Status:</strong> ${ORPHAN_LABELS[state.orphan]}
         </p>
       `;
     }
@@ -176,7 +197,13 @@
 
   function chooseGender(gender) {
     state.gender = gender;
-    state.stage = "birth"; // temporary, orphan comes next
+    state.stage = "orphan";
+    updateScene();
+  }
+
+  function chooseOrphanStatus(orphan) {
+    state.orphan = orphan;
+    state.stage = "birth";
     updateScene();
   }
 
