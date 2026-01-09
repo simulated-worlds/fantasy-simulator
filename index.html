@@ -41,67 +41,80 @@
   </div>
 
   <script>
-  let stage = "start";
-  let childhoodPath = null;
-
-  function startGame() {
-    stage = "birth";
-    updateScene();
-  }
+  // --- GLOBAL STATE (BINDING) ---
+  let state = {
+    stage: "world_intro",
+    difficulty: null,
+    race: null,
+    familyClass: null,
+    gender: null,
+    orphan: null
+  };
 
   function updateScene() {
     const story = document.getElementById("story");
     const choices = document.getElementById("choices");
 
-    if (stage === "birth") {
+    // CLEAR CHOICES BY DEFAULT
+    choices.innerHTML = "";
+
+    // --- STAGE 1: WORLD INTRODUCTION ---
+    if (state.stage === "world_intro") {
       story.textContent =
-        "You are born into a world that does not care whether you succeed or fail.";
+        "This world is vast, unequal, and indifferent. Kingdoms rise and fall, and most lives end unnoticed.";
 
       choices.innerHTML = `
-        <button onclick="advanceToChildhood()">Continue</button>
-      `;
-    }
-
-    else if (stage === "childhood") {
-      story.textContent =
-        "Childhood stretches before you. The way you are raised will shape the rest of your life.";
-
-      choices.innerHTML = `
-        <button onclick="chooseChildhood('disciplined')">
-          Grow up disciplined and obedient
-        </button>
-
-        <button onclick="chooseChildhood('curious')">
-          Grow up curious and questioning
-        </button>
-
-        <button onclick="chooseChildhood('neglected')">
-          Grow up neglected and self-reliant
+        <button onclick="advanceStage('difficulty')">
+          Continue
         </button>
       `;
     }
 
-    else if (stage === "after_childhood") {
+    // --- STAGE 2: DIFFICULTY SELECTION ---
+    else if (state.stage === "difficulty") {
       story.textContent =
-        "Your childhood has passed. It cannot be changed.";
+        "Choose the nature of the world you will be born into. This choice cannot be changed.";
 
       choices.innerHTML = `
-        <p><strong>Childhood path chosen:</strong> ${childhoodPath}</p>
+        <button onclick="chooseDifficulty('gentle')">
+          Gentle Fate
+        </button>
+
+        <button onclick="chooseDifficulty('true')">
+          True Chronicle
+        </button>
+
+        <button onclick="chooseDifficulty('cruel')">
+          Cruel World
+        </button>
+      `;
+    }
+
+    // --- PLACEHOLDER: BIRTH (LOCKED) ---
+    else if (state.stage === "birth") {
+      story.textContent =
+        "You are born.";
+
+      choices.innerHTML = `
+        <p>Birth reached. Earlier stages enforced.</p>
       `;
     }
   }
 
-  function advanceToChildhood() {
-    stage = "childhood";
+  function advanceStage(next) {
+    state.stage = next;
     updateScene();
   }
 
-  function chooseChildhood(path) {
-    childhoodPath = path;
-    stage = "after_childhood";
+  function chooseDifficulty(choice) {
+    state.difficulty = choice;
+    state.stage = "birth"; // TEMPORARY, WILL BE LOCKED DOWN NEXT
     updateScene();
   }
-             </script>
+
+  // INITIAL RENDER
+  updateScene();
+        </script>
 
 </body>
   </html>
