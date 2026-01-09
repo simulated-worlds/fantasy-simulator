@@ -41,6 +41,22 @@
   </div>
 
 <script>
+<script>
+  // --- CANONICAL LABELS (AUTHORITATIVE) ---
+  const DIFFICULTY_LABELS = {
+    gentle: "Gentle Fate",
+    true: "True Chronicle",
+    cruel: "Cruel World"
+  };
+
+  const RACE_LABELS = {
+    human: "Human",
+    elf: "Elf",
+    dwarf: "Dwarf",
+    spirit: "Elemental Spirit",
+    mythical_beast: "Mythical Beast"
+  };
+
   // --- GLOBAL STATE (BINDING) ---
   let state = {
     stage: "world_intro",
@@ -79,7 +95,7 @@
       `;
     }
 
-    // --- STAGE 3: RACE SELECTION (FULL, SPEC-COMPLIANT) ---
+    // --- STAGE 3: RACE SELECTION ---
     else if (state.stage === "race") {
       story.textContent =
         "Choose your race. This choice determines your lifecycle, vulnerability, and how the world will treat you.";
@@ -93,15 +109,14 @@
       `;
     }
 
-    // --- STAGE 7: BIRTH (LOCKED UNTIL PRIOR STAGES COMPLETE) ---
+    // --- STAGE 7: BIRTH (PLACEHOLDER) ---
     else if (state.stage === "birth") {
-      story.textContent =
-        "You are born.";
+      story.textContent = "You are born.";
 
       choices.innerHTML = `
         <p>
-          <strong>Difficulty:</strong> ${state.difficulty}<br>
-          <strong>Race:</strong> ${state.race}
+          <strong>Difficulty:</strong> ${DIFFICULTY_LABELS[state.difficulty]}<br>
+          <strong>Race:</strong> ${RACE_LABELS[state.race]}
         </p>
       `;
     }
