@@ -36,7 +36,7 @@
 
   <div id="choices"></div>
 
-  <script>
+<script>
   // --- CANONICAL LABELS (AUTHORITATIVE) ---
   const DIFFICULTY_LABELS = {
     gentle: "Gentle Fate",
@@ -59,6 +59,11 @@
     upper: "Upper Class"
   };
 
+  const GENDER_LABELS = {
+    male: "Male",
+    female: "Female"
+  };
+
   // --- GLOBAL STATE (BINDING) ---
   let state = {
     stage: "world_intro",
@@ -75,7 +80,6 @@
 
     choices.innerHTML = "";
 
-    // --- STAGE 1: WORLD INTRODUCTION ---
     if (state.stage === "world_intro") {
       story.textContent =
         "This world is vast, unequal, and indifferent. Kingdoms rise and fall, and most lives end unnoticed.";
@@ -85,7 +89,6 @@
       `;
     }
 
-    // --- STAGE 2: DIFFICULTY SELECTION ---
     else if (state.stage === "difficulty") {
       story.textContent =
         "Choose the nature of the world you will be born into. This choice cannot be changed.";
@@ -97,7 +100,6 @@
       `;
     }
 
-    // --- STAGE 3: RACE SELECTION ---
     else if (state.stage === "race") {
       story.textContent =
         "Choose your race. This determines lifespan, vulnerability, and how the world treats you.";
@@ -111,27 +113,26 @@
       `;
     }
 
-    // --- STAGE 4: FAMILY BACKGROUND (CLASS ONLY) ---
     else if (state.stage === "family_class") {
       story.textContent =
-        "You are born into a family of a particular standing. This determines early safety, expectation, and risk.";
+        "You are born into a family of a particular standing. This determines early safety and expectation.";
 
       choices.innerHTML = `
-        <button onclick="chooseFamilyClass('inferior')">
-          Inferior Class
-        </button>
+        <button onclick="chooseFamilyClass('inferior')">Inferior Class</button>
+        <button onclick="chooseFamilyClass('commoner')">Commoner Class</button>
+        <button onclick="chooseFamilyClass('middle')">Middle Class</button>
+        <button onclick="chooseFamilyClass('upper')">Upper Class</button>
+      `;
+    }
 
-        <button onclick="chooseFamilyClass('commoner')">
-          Commoner Class
-        </button>
+    // --- STAGE 5: GENDER SELECTION ---
+    else if (state.stage === "gender") {
+      story.textContent =
+        "Your gender will affect how the world treats you, legally and socially.";
 
-        <button onclick="chooseFamilyClass('middle')">
-          Middle Class
-        </button>
-
-        <button onclick="chooseFamilyClass('upper')">
-          Upper Class
-        </button>
+      choices.innerHTML = `
+        <button onclick="chooseGender('male')">Male</button>
+        <button onclick="chooseGender('female')">Female</button>
       `;
     }
 
@@ -143,7 +144,8 @@
         <p>
           <strong>Difficulty:</strong> ${DIFFICULTY_LABELS[state.difficulty]}<br>
           <strong>Race:</strong> ${RACE_LABELS[state.race]}<br>
-          <strong>Family Background:</strong> ${FAMILY_CLASS_LABELS[state.familyClass]}
+          <strong>Family Background:</strong> ${FAMILY_CLASS_LABELS[state.familyClass]}<br>
+          <strong>Gender:</strong> ${GENDER_LABELS[state.gender]}
         </p>
       `;
     }
@@ -168,114 +170,19 @@
 
   function chooseFamilyClass(familyClass) {
     state.familyClass = familyClass;
-    state.stage = "birth"; // still temporary lock
+    state.stage = "gender";
+    updateScene();
+  }
+
+  function chooseGender(gender) {
+    state.gender = gender;
+    state.stage = "birth"; // temporary, orphan comes next
     updateScene();
   }
 
   // INITIAL RENDER
   updateScene();
 </script>
-
-</body>
-</html>  <div id="choices"></div>
-
-  <script>
-    // --- CANONICAL LABELS (AUTHORITATIVE) ---
-    const DIFFICULTY_LABELS = {
-      gentle: "Gentle Fate",
-      true: "True Chronicle",
-      cruel: "Cruel World"
-    };
-
-    const RACE_LABELS = {
-      human: "Human",
-      elf: "Elf",
-      dwarf: "Dwarf",
-      spirit: "Elemental Spirit",
-      mythical_beast: "Mythical Beast"
-    };
-
-    // --- GLOBAL STATE (BINDING) ---
-    let state = {
-      stage: "world_intro",
-      difficulty: null,
-      race: null,
-      familyClass: null,
-      gender: null,
-      orphan: null
-    };
-
-    function updateScene() {
-      const story = document.getElementById("story");
-      const choices = document.getElementById("choices");
-
-      choices.innerHTML = "";
-
-      if (state.stage === "world_intro") {
-        story.textContent =
-          "This world is vast, unequal, and indifferent. Kingdoms rise and fall, and most lives end unnoticed.";
-
-        choices.innerHTML = `
-          <button onclick="advanceStage('difficulty')">Continue</button>
-        `;
-      }
-
-      else if (state.stage === "difficulty") {
-        story.textContent =
-          "Choose the nature of the world you will be born into. This choice cannot be changed.";
-
-        choices.innerHTML = `
-          <button onclick="chooseDifficulty('gentle')">Gentle Fate</button>
-          <button onclick="chooseDifficulty('true')">True Chronicle</button>
-          <button onclick="chooseDifficulty('cruel')">Cruel World</button>
-        `;
-      }
-
-      else if (state.stage === "race") {
-        story.textContent =
-          "Choose your race. This choice determines your lifecycle, vulnerability, and how the world will treat you.";
-
-        choices.innerHTML = `
-          <button onclick="chooseRace('human')">Human</button>
-          <button onclick="chooseRace('elf')">Elf</button>
-          <button onclick="chooseRace('dwarf')">Dwarf</button>
-          <button onclick="chooseRace('spirit')">Elemental Spirit</button>
-          <button onclick="chooseRace('mythical_beast')">Mythical Beast</button>
-        `;
-      }
-
-      else if (state.stage === "birth") {
-        story.textContent = "You are born.";
-
-        choices.innerHTML = `
-          <p>
-            <strong>Difficulty:</strong> ${DIFFICULTY_LABELS[state.difficulty]}<br>
-            <strong>Race:</strong> ${RACE_LABELS[state.race]}
-          </p>
-        `;
-      }
-    }
-
-    function advanceStage(next) {
-      state.stage = next;
-      updateScene();
-    }
-
-    function chooseDifficulty(choice) {
-      state.difficulty = choice;
-      state.stage = "race";
-      updateScene();
-    }
-
-    function chooseRace(race) {
-      state.race = race;
-      state.stage = "birth";
-      updateScene();
-    }
-
-    // INITIAL RENDER
-    updateScene();
-  </script>
 
 </body>
 </html>
