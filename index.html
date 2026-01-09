@@ -4,8 +4,30 @@
   <meta charset="UTF-8">
   <title>Fantasy Simulator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: serif;
+      background-color: #111;
+      color: #eee;
+      padding: 20px;
+    }
+
+    button {
+      background-color: #333;
+      color: #eee;
+      border: 1px solid #666;
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 <body>
+
   <h1>Fantasy Simulator</h1>
 
   <p>
@@ -13,8 +35,18 @@
     consequence, permanence, and an uncaring reality.
   </p>
 
-  <p>
+  <p id="story">
     This project is under construction.
   </p>
+
+  <button onclick="startGame()">Begin Life</button>
+
+  <script>
+    function startGame() {
+      document.getElementById("story").textContent =
+        "You are born into a world that does not care whether you succeed or fail.";
+    }
+  </script>
+
 </body>
 </html>
