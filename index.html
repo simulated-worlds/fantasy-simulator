@@ -55,7 +55,6 @@
     const story = document.getElementById("story");
     const choices = document.getElementById("choices");
 
-    // CLEAR CHOICES BY DEFAULT
     choices.innerHTML = "";
 
     // --- STAGE 1: WORLD INTRODUCTION ---
@@ -76,27 +75,35 @@
         "Choose the nature of the world you will be born into. This choice cannot be changed.";
 
       choices.innerHTML = `
-        <button onclick="chooseDifficulty('gentle')">
-          Gentle Fate
-        </button>
-
-        <button onclick="chooseDifficulty('true')">
-          True Chronicle
-        </button>
-
-        <button onclick="chooseDifficulty('cruel')">
-          Cruel World
-        </button>
+        <button onclick="chooseDifficulty('gentle')">Gentle Fate</button>
+        <button onclick="chooseDifficulty('true')">True Chronicle</button>
+        <button onclick="chooseDifficulty('cruel')">Cruel World</button>
       `;
     }
 
-    // --- PLACEHOLDER: BIRTH (LOCKED) ---
+    // --- STAGE 3: RACE SELECTION ---
+    else if (state.stage === "race") {
+      story.textContent =
+        "Choose your race. This determines lifespan, vulnerability, and how the world treats you.";
+
+      choices.innerHTML = `
+        <button onclick="chooseRace('human')">Human</button>
+        <button onclick="chooseRace('elf')">Elf</button>
+        <button onclick="chooseRace('dwarf')">Dwarf</button>
+      `;
+    }
+
+    // --- STAGE 7: BIRTH (LOCKED UNTIL ALL PRIOR STAGES COMPLETE) ---
     else if (state.stage === "birth") {
       story.textContent =
         "You are born.";
 
       choices.innerHTML = `
-        <p>Birth reached. Earlier stages enforced.</p>
+        <p>
+          Birth reached.<br>
+          Difficulty: ${state.difficulty}<br>
+          Race: ${state.race}
+        </p>
       `;
     }
   }
@@ -108,13 +115,19 @@
 
   function chooseDifficulty(choice) {
     state.difficulty = choice;
-    state.stage = "birth"; // TEMPORARY, WILL BE LOCKED DOWN NEXT
+    state.stage = "race";
+    updateScene();
+  }
+
+  function chooseRace(race) {
+    state.race = race;
+    state.stage = "birth";
     updateScene();
   }
 
   // INITIAL RENDER
   updateScene();
-        </script>
+    </script>
 
 </body>
   </html>
