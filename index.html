@@ -42,6 +42,7 @@
 
   <script>
   let stage = "start";
+  let childhoodPath = null;
 
   function startGame() {
     stage = "birth";
@@ -57,30 +58,50 @@
         "You are born into a world that does not care whether you succeed or fail.";
 
       choices.innerHTML = `
-        <button onclick="nextStage()">Continue</button>
+        <button onclick="advanceToChildhood()">Continue</button>
       `;
     }
 
     else if (stage === "childhood") {
       story.textContent =
-        "Childhood passes quietly. You learn obedience before you learn choice.";
+        "Childhood stretches before you. The way you are raised will shape the rest of your life.";
 
       choices.innerHTML = `
-        <button onclick="nextStage()">Continue</button>
+        <button onclick="chooseChildhood('disciplined')">
+          Grow up disciplined and obedient
+        </button>
+
+        <button onclick="chooseChildhood('curious')">
+          Grow up curious and questioning
+        </button>
+
+        <button onclick="chooseChildhood('neglected')">
+          Grow up neglected and self-reliant
+        </button>
+      `;
+    }
+
+    else if (stage === "after_childhood") {
+      story.textContent =
+        "Your childhood has passed. It cannot be changed.";
+
+      choices.innerHTML = `
+        <p><strong>Childhood path chosen:</strong> ${childhoodPath}</p>
       `;
     }
   }
 
-  function nextStage() {
-    if (stage === "birth") {
-      stage = "childhood";
-    } else if (stage === "childhood") {
-      stage = "end";
-    }
-
+  function advanceToChildhood() {
+    stage = "childhood";
     updateScene();
   }
-    </script>
+
+  function chooseChildhood(path) {
+    childhoodPath = path;
+    stage = "after_childhood";
+    updateScene();
+  }
+             </script>
 
 </body>
   </html>
