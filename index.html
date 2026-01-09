@@ -13,6 +13,8 @@
     }
 
     button {
+      display: block;
+      margin-top: 12px;
       background-color: #333;
       color: #eee;
       border: 1px solid #666;
@@ -30,23 +32,41 @@
 
   <h1>Fantasy Simulator</h1>
 
-  <p>
-    Live as the protagonist of a text-based high fantasy world shaped by
-    consequence, permanence, and an uncaring reality.
-  </p>
-
   <p id="story">
     This project is under construction.
   </p>
 
-  <button onclick="startGame()">Begin Life</button>
+  <div id="choices">
+    <button onclick="startGame()">Begin Life</button>
+  </div>
 
   <script>
+    let stage = "start";
+
     function startGame() {
-      document.getElementById("story").textContent =
-        "You are born into a world that does not care whether you succeed or fail.";
+      stage = "birth";
+      updateScene();
+    }
+
+    function updateScene() {
+      const story = document.getElementById("story");
+      const choices = document.getElementById("choices");
+
+      if (stage === "birth") {
+        story.textContent =
+          "You are born into a world that does not care whether you succeed or fail.";
+
+        choices.innerHTML = `
+          <button onclick="nextStage()">Continue</button>
+        `;
+      }
+    }
+
+    function nextStage() {
+      stage = "childhood";
+      updateScene();
     }
   </script>
 
 </body>
-</html>
+  </html>
